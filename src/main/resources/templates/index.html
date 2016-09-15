@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>网上书城</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.1.0.min.js}"></script>
+</head>
+<body>
+<div th:include="templates::head"></div>
+<div id="content" class="wrap">
+    <div class="list bookList">
+        <form method="post" name="shoping" action="/cart/add">
+            <table>
+                <tr class="title">
+                    <th class="checker"></th>
+                    <th>书名</th>
+                    <th class="info">简介</th>
+                    <th class="price">价格</th>
+                    <th class="view">图片预览</th>
+                    <!--<th>图书数目</th>-->
+                </tr>
+
+                <tr th:each="book : ${bookList}">
+                    <td><input type="checkbox" name="bid" th:value="${book.id}"/></td>
+                    <td class="title" th:text="${book.title}">侯卫东官场笔记7</td>
+                    <td class="info" th:text="${book.describe}"></td>
+                    <td th:text="'￥'+${book.price}">￥15.80</td>
+                    <td class="thumb"><img th:src="'/'+${book.faceimg}"/></td>
+                    <!--<td><input type="text" name="counts" value=0></td>-->
+                </tr>
+
+            </table>
+
+
+            <div class="button"><input class="input-btn" type="submit" name="submit" value=""/></div>
+        </form>
+    </div>
+</div>
+<script>
+    $.ready(function () {
+        //获得文本框对象
+        var t = $("#text_box");
+        //数量增加操作
+        $("#add").click(function () {
+            t.val(parseInt(t.val()) + 1)
+            if (parseInt(t.val()) != 1) {
+                $('#min').attr('disabled', false);
+            }
+            setTotal();
+        })
+        //数量减少操作
+        $("#min").click(function () {
+            t.val(parseInt(t.val()) - 1);
+            if (parseInt(t.val()) == 1) {
+                $('#min').attr('disabled', true);
+            }
+            setTotal();
+        })
+        //计算操作
+        function setTotal() {
+            $("#total").html((parseInt(t.val()) * 3.95).toFixed(2));//toFixed()是保留小数点的函数很实用哦
+        }
+
+        //初始化
+        setTotal();
+    })
+</script>
+</body>
+<div id="footer" class="wrap">
+    网上书城 &copy; 版权所有
+</div>
+</html>
+

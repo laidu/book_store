@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上书城</title>
+</head>
+
+<body>
+<div th:include="templates::head"></div>
+
+<div id="content" class="wrap">
+    <div class="list bookList">
+        <form method="post" name="shoping" action="/order/pay">
+            <table>
+                <tr class="title">
+                    <th class="view">图片预览</th>
+                    <th>书名</th>
+                    <th class="nums">数量</th>
+                    <th class="price">价格</th>
+                    <th class="nums">合计</th>
+                    <th class="nums">操作</th>
+                </tr>
+
+                <tr th:each="cart : ${cartList}">
+                    <td class="thumb"><img th:src="'/'+${cart.book.faceimg}"/></td>
+                    <td class="title" th:text="${cart.book.title}">侯卫东官场笔记7</td>
+                    <td th:text="${cart.counts}">2</td>
+                    <td th:text="'￥'+${cart.book.price}">￥15.80</td>
+                    <td th:text="'￥'+${cart.totalprice}">￥31.60</td>
+                    <td><a th:href="'/cart/add?bid='+${cart.bid}">加1</a>
+                        <a th:href="'/cart/delByBid?bid='+${cart.bid}">删除</a>
+                        <a th:href="'/cart/del?cartId='+${cart.id}">减1</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <input type="hidden" name="total" value="141.5"/>
+                        <div class="button">
+                            <h4 th:text="'总价：￥'+${totalprice}+'元'">141.50</h4>
+                            <h4>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h4>
+                            <h4><a href="/cart/clean">清空购物车</a></h4>
+                            <a href="/order/pay"><img th:src="@{/images/button_chart.png}"/></a>
+                        </div>
+                    </td>
+                </tr>
+
+
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+<div id="footer" class="wrap">
+    网上书城 &copy; 版权所有
+</div>
+</html>
+ 
+

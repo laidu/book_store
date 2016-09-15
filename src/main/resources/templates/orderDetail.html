@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上书城</title>
+</head>
+<body>
+<div th:include="templates::head"></div>
+
+<div id="content" class="wrap">
+    <div class="list bookList">
+        <form method="post" name="shoping" action="">
+            <table>
+                <tr class="title">
+                    <th class="view">图片预览</th>
+                    <th>书名</th>
+                    <th class="nums">数量</th>
+                    <th class="nums">单价</th>
+                </tr>
+                <tr th:each="order: ${orderList}">
+                    <td class="title" style="width:15%;text-align:center;"><img th:src="'/'+${order.book.faceimg}"/>
+                    </td>
+                    <td class="title" style="width:15%;text-align:center;" th:text="${order.book.title}">
+                        春宴（安妮宝贝最新长篇小说）
+                    </td>
+                    <td class="info" style="width:20%;text-align:center;" th:text="${order.counts}">36</td>
+                    <td style="width:15%;text-align:center;" th:text="'￥'+${order.book.price}">35.05</td>
+                </tr>
+                <tr>
+                    <td>收货人：
+                        <input th:type="text" th:value="${orderList[0].order.receiver}"/>
+                    </td>
+                    <td>收货地址：
+                        <input th:type="text" th:id="raddress" th:value="${orderList[0].order.raddress}"/>
+                    </td>
+                    <td>
+                        联系电话：
+                        <input th:type="text" th:id="rphone" th:value="${orderList[0].order.rphone}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <input type="hidden" name="total" value="141.5"/>
+                        <div class="button">
+                            <h4 th:text="'总价：￥'+${orderList[0].order.totalprice}">总价：￥35.05元</h4>
+                            <input type="hidden" id="hidden_total_price" name="hidden_total_price"/>
+                            <input type="button" value="返回" onclick="history.go(-1);" style="width:150px;"/>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+</div>
+<div id="footer" class="wrap">
+    网上书城 &copy; 版权所有
+</div>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+    function getTarget() {
+        var userid = $("#userID").val();
+        var cartid = $("#cartId").val();
+        var total = $("#totalp").val();
+        var receiver = $("#receiver").val();
+        var rphone = $("#rphone").val();
+        var raddress = $("#raddress").val();
+        window.location.href = "PayServlet?cartId=" + cartid + "&uid=" + userid + "&total=" + total
+                + "&receiver=" + receiver + "&rphone=" + rphone + "&raddress=" + raddress;
+    }
+
+    function check() {
+        var username = document.getElementById("username");
+        if (!isUsernameLegal()) {
+            username.focus();
+            return false;
+        } else if (!isPasswordLegal()) {
+            username.focus();
+            return false;
+        }
+        else if (!isRepasswordLegal()) {
+            username.focus();
+            return false;
+        }
+        else if (!isEmailLegal()) {
+            username.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

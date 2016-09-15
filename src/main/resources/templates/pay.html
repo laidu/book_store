@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>网上书城</title>
+</head>
+
+<body>
+<div th:include="templates::head"></div>
+<div id="content" class="wrap">
+	<div class="list bookList">
+		<form method="post" name="shoping" action="/order/payFinish">
+			<table>
+				<tr class="title">
+					<th class="view">图片预览</th>
+					<th>书名</th>
+					<th class="nums">数量</th>
+					<th class="price">价格</th>
+					<th class="nums">合计</th>
+				</tr>
+				<tr th:each="cart : ${cartList}">
+					<td class="thumb"><img th:src="'/'+${cart.book.faceimg}"/>
+					</td>
+					<td class="title" th:text="${cart.book.title}">侯卫东官场笔记7</td>
+					<td th:text="${cart.counts}">2</td>
+					<td th:text="'￥'+${cart.book.price}">￥15.80</td>
+					<td th:text="'￥'+${cart.totalprice}">￥31.60</td>
+				</tr>
+				<tr>
+						<td>收货人：
+							<input type="text" id="receiver" name="receiver" />
+						</td>
+						<td>收货地址：
+							<input type="text" id="raddress" name="raddress" />
+						</td>
+						<td>
+							联系电话：
+							<input type="text" id="rphone" name="rphone"/>
+						</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<div class="button">
+							<h4 th:text="'总价：￥'+${totalprice}+'元'"></h4>
+							<input class="input-chart" type="submit" name="submit" value=""/>
+						</div>
+					</td>
+				</tr>
+				
+			</table>
+		</form>
+	</div>
+</div>
+	<div id="footer" class="wrap">
+		网上书城 &copy; 版权所有
+	</div>
+	<script type="text/javascript">
+		function getTarget(){
+			var flag=check();
+			if(flag!=true){
+				alert("收货人信息不能为空!");
+				
+			}else{
+				var userid=$("#userID").val();
+				var cartid=$("#cartId").val();
+				alert(cartid);
+				var total=$("#totalp").val();
+				var receiver=$("#receiver").val();
+				var rphone=$("#rphone").val();
+				var raddress=$("#raddress").val();
+				window.location.href="PayServlet?cartId="+cartid+"&uid="+userid+"&total="+total
+						+"&receiver="+receiver+"&rphone="+rphone+"&raddress="+raddress; 
+			}
+			
+		}
+		
+		function check(){
+			var receiver=$("#receiver").val();
+			var raddress=$("#raddress").val();
+			var rphone=$("#rphone").val();
+			if(receiver == null || receiver == ""){
+				return false;
+			}else if(raddress == null || raddress == ""){
+				return false;
+			}else if(rphone == null || rphone == ""){
+				return false;
+			}		
+			return true;		
+		}
+	</script>
+</body>
+</html>
